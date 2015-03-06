@@ -1,0 +1,19 @@
+Unity download:
+
+http://www.unity3d.com
+
+Tutorials:
+
+https://developer.leapmotion.com/getting-started/unity
+(don't forget https://developer.leapmotion.com/getting-started/unity/free for setup with Unity Free)
+
+Plinko
+Tilt Maze
+Spinner (wheel of fortune style)
+Bowling
+Whack-a-mole
+
+other possibilities (stretch):
+Punch-out clone
+Fishing
+Skee-ball
