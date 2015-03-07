@@ -35,12 +35,16 @@ public class ToolAlikeBehavior : MonoBehaviour {
             return;
         else {
             var controller_ = GameObject.Find ("HandController");
-            var rb = gameObject.GetComponent<Rigidbody>();
+            /*var rb = gameObject.GetComponent<Rigidbody>();
             if(rb != null)
             {
                 rb.velocity = leap_hand.PalmVelocity.ToUnityScaled() * scaleMovement;
-            }
-            //gameObject.transform.position = controller_.transform.TransformPoint (leap_hand.PalmPosition.ToUnityScaled ());
+            }*/
+            float initialY = gameObject.transform.position.y;
+            gameObject.transform.position = controller_.transform.TransformPoint (leap_hand.PalmPosition.ToUnityScaled ());
+            //Ignore the Z component
+            gameObject.transform.position = 
+                new Vector3(gameObject.transform.position.x, initialY, gameObject.transform.position.z);
             gameObject.transform.rotation = leap_hand.Basis.Rotation();
         }
 	}
