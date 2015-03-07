@@ -1,0 +1,18 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="c:\Projects\StartupWeekend\SEPlinko\SEPlinko\Assets\OVR\Editor\OVRGameView.cs">
+    <Files>
+      <File FileName="Assets\LeapMotion\Scripts\HandController.cs" Line="91" Column="75" />
+      <File FileName="c:\Projects\StartupWeekend\SEPlinko\SEPlinko\Assets\LeapMotion\Scripts\Hands\FingerModel.cs" Line="44" Column="39" />
+      <File FileName="c:\Projects\StartupWeekend\SEPlinko\SEPlinko\Assets\LeapMotion\Scripts\Hands\HandModel.cs" Line="102" Column="43" />
+      <File FileName="c:\Projects\StartupWeekend\SEPlinko\SEPlinko\Assets\OVR\Scripts\Util\OVRMainMenu.cs" Line="969" Column="39" />
+      <File FileName="c:\Projects\StartupWeekend\SEPlinko\SEPlinko\Assets\LeapMotion\Scripts\LeapImageRetriever.cs" Line="125" Column="7" />
+      <File FileName="c:\Projects\StartupWeekend\SEPlinko\SEPlinko\Assets\LeapMotion\Editor\HandControllerEditor.cs" Line="11" Column="22" />
+      <File FileName="c:\Projects\StartupWeekend\SEPlinko\SEPlinko\Assets\OVR\Editor\OVRGameView.cs" Line="64" Column="7" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

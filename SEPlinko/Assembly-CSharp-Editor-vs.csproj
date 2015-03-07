@@ -69,8 +69,8 @@
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
- <Reference Include="LeapCSharp.NET3.5">
- <HintPath>C:/Projects/StartupWeekend/SEPlinko/SEPlinko/Assets/LeapCSharp.NET3.5.dll</HintPath>
+ <Reference Include="LeapCSharp.NET4.0">
+ <HintPath>C:/Projects/StartupWeekend/SEPlinko/SEPlinko/Assets/LeapCSharp.NET4.0.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.Graphs">
  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
@@ -102,6 +102,10 @@
  <Reference Include="UnityEditor.OSXStandalone.Extensions">
  <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/macstandalonesupport/UnityEditor.OSXStandalone.Extensions.dll</HintPath>
  </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-vs.csproj">
+      <Project>{2B9DDB82-DA62-79CF-0E6F-E273064DBA49}</Project>      <Name>Assembly-CSharp-vs</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
