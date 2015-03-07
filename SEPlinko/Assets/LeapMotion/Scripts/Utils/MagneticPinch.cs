@@ -7,6 +7,8 @@
 using UnityEngine;
 using System.Collections;
 using Leap;
+using System.Collections.Generic;
+
 
 // Leap Motion hand script that detects pinches and grabs the
 // closest rigidbody with a spring force if it's within a given range.
@@ -43,6 +45,11 @@ public class MagneticPinch : MonoBehaviour {
   }
 
   void OnRelease() {
+        if (grabbed_ != null) {
+            var collisions = gameObject.GetComponentsInChildren<Collider> ();
+            System.Array.ForEach (collisions, c => Physics.IgnoreCollision (c, grabbed_, false));
+            //Physics.IgnoreCollision(gameObject, grabbed_, false);
+        }
     grabbed_ = null;
     pinching_ = false;
   }
@@ -50,6 +57,8 @@ public class MagneticPinch : MonoBehaviour {
   void Update() {
     bool trigger_pinch = false;
     HandModel hand_model = GetComponent<HandModel>();
+		if (hand_model == null)
+			return;
     Hand leap_hand = hand_model.GetLeapHand();
 
     if (leap_hand == null)
@@ -82,6 +91,9 @@ public class MagneticPinch : MonoBehaviour {
 
     // Accelerate what we are grabbing toward the pinch.
     if (grabbed_ != null) {
+        var collisions = gameObject.GetComponentsInChildren<Collider>();
+        System.Array.ForEach(collisions, c=>Physics.IgnoreCollision(c, grabbed_));
+        
       Vector3 distance = pinch_position - grabbed_.transform.position;
       grabbed_.GetComponent<Rigidbody>().AddForce(forceSpringConstant * distance);
     }
