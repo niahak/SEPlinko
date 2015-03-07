@@ -1,0 +1,15 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\BallBehavior.cs">
+    <Files>
+      <File FileName="Assets\PlayerMovement.cs" Line="35" Column="63" />
+      <File FileName="Assets\BallBehavior.cs" Line="32" Column="35" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="C:\Projects\StartupWeekend\SEPlinko\2D\2DTesting\Assets\BallBehavior.cs" line="22" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
