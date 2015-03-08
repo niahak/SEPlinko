@@ -2,13 +2,9 @@
 using System.Collections;
 
 public class BallBehavior : MonoBehaviour {
-	
-	private Vector2 _initialPosition;
+
 	// Use this for initialization
 	void Start () {
-		_initialPosition = transform.position;
-		Rigidbody2D rb = GetComponent<Rigidbody2D>();
-		rb.velocity = new Vector2(0, -5);
 	}
 	
 	// Update is called once per frame
@@ -16,6 +12,8 @@ public class BallBehavior : MonoBehaviour {
 		Rigidbody2D rb = GetComponent<Rigidbody2D>();
 		if (rb.position.y > 4.5) {
 			Destroy(rb.gameObject);
+			ScoreManager.lives--;
+			ScoreManager.BallInPlay = false;
 		}
 	
 	}
@@ -24,13 +22,7 @@ public class BallBehavior : MonoBehaviour {
 	{
 		var block = col.gameObject.GetComponent<BreakableBlock> ();
 		if (block != null) {
-			block.hitsToDestroy--;
-			if(block.hitsToDestroy <= 0)
-			{
-				Destroy(block.gameObject);
-			}
-			ScoreManager.score += 10;
-
+			block.TakeHit();
 		}
     }
 }

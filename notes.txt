@@ -17,3 +17,8 @@ other possibilities (stretch):
 Punch-out clone
 Fishing
 Skee-ball
+
+Release details:
+
+1) When building an executable for release, be sure to make it an x86_64 assembly (as the Leap ones are also set to AnyCPU).
+2) Copy the following DLLS from the project folder to the executable location: Leap.dll, Leap3dInteractDll.dll, LeapCSharp.dll
