@@ -8,11 +8,13 @@ public class PuckControl : MonoBehaviour {
     int bucketCollisions = 0;
 
     private Vector3 originalPosition;
+    private Quaternion originalRotation;
     private AudioSource source;
 
     void Awake () {
         source = GetComponent<AudioSource>();
         originalPosition = transform.position;
+        originalRotation = transform.rotation;
     }
 
 	// Use this for initialization
@@ -31,6 +33,11 @@ public class PuckControl : MonoBehaviour {
     {
         gameObject.GetComponent<Rigidbody> ().position = originalPosition;
         gameObject.GetComponent<Rigidbody> ().velocity = new Vector3(0,0,0);
+
+        gameObject.GetComponent<Rigidbody> ().transform.rotation = originalRotation;
+        
+
+
         bucketCollisions = 0;
     }
 
