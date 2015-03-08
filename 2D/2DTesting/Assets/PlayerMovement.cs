@@ -5,10 +5,7 @@ using Leap;
 public class PlayerMovement : MonoBehaviour {
 
 	private Leap.Controller controller;
-	private Transform ballInPlay;
 
-	//Designer variables
-	public Transform ballPrefab;
 
 	// Use this for initialization
 	void Start () {
@@ -25,39 +22,15 @@ public class PlayerMovement : MonoBehaviour {
 		Hand leap_hand = hands[0];
 
 		foreach (Gesture g in frame.Gestures()) {
-			if(ScoreManager.gameState == GameState.GameOver)
+
+			if(g.Type == Gesture.GestureType.TYPECIRCLE)
 			{
-				if(g.Type == Gesture.GestureType.TYPECIRCLE)
-				{
-					ScoreManager.CircleAction();
-				}
+				ScoreManager.CircleAction();
 			}
-			else if(ScoreManager.gameState == GameState.StageComplete)
+			else if(g.Type == Gesture.GestureType.TYPESCREENTAP)
 			{
-				if(g.Type == Gesture.GestureType.TYPECIRCLE)
-				{
-					ScoreManager.CircleAction();
-				}
-			}
-			else {
-				if(g.Type == Gesture.GestureType.TYPECIRCLE && !ScoreManager.BallInPlay)
-				{
-					//TODO: only "start" the game if it's not started
-					ScoreManager.BallInPlay = true;
-					ballInPlay = Instantiate(ballPrefab) as Transform;
-					ballInPlay.position = new Vector3(transform.position.x, transform.position.y);
-					var rb = ballInPlay.GetComponent<Rigidbody2D>();
-					rb.velocity = new Vector2(2, -4);
-				}
-				else if(g.Type == Gesture.GestureType.TYPESCREENTAP && ScoreManager.BallInPlay)
-				{
-					if(ballInPlay != null)
-					{
-						Destroy(ballInPlay.gameObject);
-						ScoreManager.BallInPlay = false;
-						ScoreManager.lives--;
-					}
-			}
+				ScoreManager.ScreenTap();
+
 			}
 		}
 

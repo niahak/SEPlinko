@@ -9,13 +9,11 @@ public enum GameState {
 }
 
 public class ScoreManager : MonoBehaviour {
-	// Use this for initialization
-	void Start () {
-	
-	}
+
 
 	private static int currentStageIndex = 1;
 	private static GameObject currentStage;
+	private static GameObject player;
 
 	readonly static string[] stages = new string[] {
 		"Stage1",
@@ -25,11 +23,17 @@ public class ScoreManager : MonoBehaviour {
 	};
 
 	//TODO: Refactor so this only manages score, or manage game state someplace more obvious + central.
-	public static GameState gameState = GameState.GameRunning;
+	private static GameState gameState = GameState.GameRunning;
 	public static bool BallInPlay;
+	private static Transform ballInPlay;
 	public static int score;
 	public static int lives;
 	Text text;
+
+	// Use this for initialization
+	void Start () {
+		player = (GameObject)Instantiate(Resources.Load("Player"));
+	}
 
 	void Awake()
 	{
@@ -64,6 +68,8 @@ public class ScoreManager : MonoBehaviour {
 			{
 				//Presumably we're out of blocks
 				gameState = GameState.StageComplete;
+				BallInPlay = false;
+				Destroy(ballInPlay.gameObject);
 			}
 			
 			if (lives < 0) {
@@ -85,12 +91,35 @@ public class ScoreManager : MonoBehaviour {
 				currentStageIndex++;
 				LoadStage(currentStageIndex);
 				break;
+		case GameState.GameRunning:
+			if(!BallInPlay)
+			{
+				BallInPlay = true;
+				GameObject ballObject = (GameObject)Instantiate(Resources.Load("Ball"));
+				ballInPlay = ballObject.transform;
+				var location = new Vector3(player.transform.position.x, player.transform.position.y);
+				ballInPlay.position = location;
+				var rb = ballInPlay.GetComponent<Rigidbody2D>();
+				rb.velocity = new Vector2(2, -4);
+			}
+			break;
+		}
+	}
+
+	public static void ScreenTap()
+	{
+		if(ballInPlay != null)
+		{
+			Destroy(ballInPlay.gameObject);
+			ScoreManager.BallInPlay = false;
+			ScoreManager.lives--;
 		}
 	}
 
 	private static void LoadStage(int stageNum)
 	{
 		gameState = GameState.GameRunning;
+		BallInPlay = false;
 		int stageIndex = Mathf.Min (stageNum, stages.Length) - 1;
 		Destroy (currentStage);
 		currentStage = (GameObject)Instantiate(Resources.Load(stages[stageIndex]));
