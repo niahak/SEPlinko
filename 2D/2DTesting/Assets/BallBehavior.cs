@@ -14,6 +14,10 @@ public class BallBehavior : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		Rigidbody2D rb = GetComponent<Rigidbody2D>();
+		if (rb.position.y > 4.5) {
+			Destroy(rb.gameObject);
+		}
 	
 	}
 
