@@ -29,7 +29,7 @@ public class PuckControl : MonoBehaviour {
             if (col.gameObject.tag == "PuckBucket")
             {
                 source.PlayOneShot(puckDropSound, 1.0f);
-                transform.position = originalPosition;
+                //transform.position = originalPosition;
             }
             source.PlayOneShot(pegSound, 1.0f);
         }

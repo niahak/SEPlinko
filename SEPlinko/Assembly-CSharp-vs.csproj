@@ -146,7 +146,7 @@
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="LeapCSharp.NET4.0">
- <HintPath>C:/Git/SEPlinko/SEPlinko/Assets/LeapCSharp.NET4.0.dll</HintPath>
+ <HintPath>C:/Projects/SEPlinko/SEPlinko/Assets/LeapCSharp.NET4.0.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
