@@ -2,8 +2,7 @@
 using System.Collections;
 
 public class BallBehavior : MonoBehaviour {
-
-
+	
 	private Vector2 _initialPosition;
 	// Use this for initialization
 	void Start () {
@@ -30,6 +29,8 @@ public class BallBehavior : MonoBehaviour {
 			{
 				Destroy(block.gameObject);
 			}
+			ScoreManager.score += 10;
+
 		}
     }
 }
