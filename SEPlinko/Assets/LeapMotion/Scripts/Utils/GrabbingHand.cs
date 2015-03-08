@@ -133,18 +133,19 @@ public class GrabbingHand : MonoBehaviour {
     if (grabbable != null) {
       // Notify grabbable object that it was grabbed.
       grabbable.OnGrab();
-
+            active_object_.GetComponent<ConstantForce>().enabled=false;
+            
     }
   }
 
   protected void OnRelease() {
     if (active_object_ != null) {
-            Debug.Log("releasing target");
       // Notify the grabbable object that is was released.
       GrabbableObject grabbable = active_object_.GetComponent<GrabbableObject>();
       if (grabbable != null)
         grabbable.OnRelease();
            
+            active_object_.GetComponent<ConstantForce>().enabled=true;
 
       Leap.Utils.IgnoreCollisions(gameObject, active_object_.gameObject, false);
     }
@@ -208,7 +209,6 @@ public class GrabbingHand : MonoBehaviour {
   protected bool ObjectReleaseBreak(Vector3 pinch_position) {
     if (active_object_ == null)
       return true;
-        Debug.Log("break from target");
     Vector3 delta_position = pinch_position - active_object_.transform.position;
     return delta_position.magnitude > releaseBreakDistance;
   }
