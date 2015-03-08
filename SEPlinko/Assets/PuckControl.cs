@@ -14,11 +14,16 @@ public class PuckControl : MonoBehaviour {
     private bool finishedGame = false;
     private GameObject winText;
 
+    private Material winTextMaterial;
+
     void Awake () {
         source = GetComponent<AudioSource>();
         originalPosition = transform.position;
         originalRotation = transform.rotation;
-        
+
+        winTextMaterial = (Material)Resources.Load ("Material/WinText", typeof(Material));
+        Debug.Log ("Loaded Mat");
+
         winText = GameObject.Find ("WinText");
     }
 
@@ -58,12 +63,24 @@ public class PuckControl : MonoBehaviour {
             }
             source.PlayOneShot(pegSound, 1.0f);
 
-            if (col.gameObject.tag == "PuckBucket")
+            if (col.gameObject.tag.StartsWith("PuckBucket"))
             {
                 bucketCollisions++;
                 if(bucketCollisions >3 && !finishedGame)
                 {
                     finishedGame = true;
+                    if (col.gameObject.tag == "PuckBucketOrange") {
+                        winTextMaterial.color = new Color(238, 118, 35);
+                        //winText.GetComponent<MeshRenderer>().material.color = new Color(238, 118, 35);
+                    }
+                    else if (col.gameObject.tag == "PuckBucketGreen") {
+                        winTextMaterial.color = new Color(71, 172, 72);
+                        //winText.GetComponent<MeshRenderer>().material.color = new Color(71, 172, 72);
+                    }
+                    else if (col.gameObject.tag == "PuckBucketPurple") {
+                        winTextMaterial.color = new Color(74, 37, 104);
+                        //winText.GetComponent<MeshRenderer>().material.color = new Color(74, 37, 104);
+                    }
                     winText.GetComponent<MeshRenderer>().enabled = true;
                     winText.GetComponent<Animator>().Play("Win",-1,0f);
 
