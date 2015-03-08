@@ -16,6 +16,8 @@ public class GrabbingHand : MonoBehaviour {
     kReleased,
     kReleasing
   }
+    // Layers that we can grab.
+    public GameObject Camera;
 
   // Layers that we can grab.
   public LayerMask grabbableLayers = ~0;
@@ -131,6 +133,8 @@ public class GrabbingHand : MonoBehaviour {
 
 
     if (grabbable != null) {
+            if(Camera !=null)
+                Camera.GetComponent<MoveOnRelease>().Pinched(true);
       // Notify grabbable object that it was grabbed.
       grabbable.OnGrab();
             active_object_.GetComponent<ConstantForce>().enabled=false;
@@ -140,6 +144,8 @@ public class GrabbingHand : MonoBehaviour {
 
   protected void OnRelease() {
     if (active_object_ != null) {
+            if(Camera !=null)
+                Camera.GetComponent<MoveOnRelease>().Pinched(false);
       // Notify the grabbable object that is was released.
       GrabbableObject grabbable = active_object_.GetComponent<GrabbableObject>();
       if (grabbable != null)
@@ -263,3 +269,5 @@ public class GrabbingHand : MonoBehaviour {
     pinch_state_ = new_pinch_state;
   }
 }
+
+
