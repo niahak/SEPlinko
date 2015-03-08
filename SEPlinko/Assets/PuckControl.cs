@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PuckControl : MonoBehaviour {
 
+    public Camera camera;
     public AudioClip pegSound;
     public AudioClip puckDropSound;
     int bucketCollisions = 0;
@@ -36,7 +37,7 @@ public class PuckControl : MonoBehaviour {
 
         gameObject.GetComponent<Rigidbody> ().transform.rotation = originalRotation;
         
-
+        camera.GetComponent<MoveOnRelease> ().Reset ();
 
         bucketCollisions = 0;
     }
