@@ -124,6 +124,7 @@
      <Compile Include="Assets\OVR\Scripts\Util\OVRUGUI.cs" />
      <Compile Include="Assets\OVR\Scripts\Util\OVRVisionGuide.cs" />
      <Compile Include="Assets\PaddleScript.cs" />
+     <Compile Include="Assets\PuckControl.cs" />
      <Compile Include="Assets\TargetCollisionScript.cs" />
      <Compile Include="Assets\ToolAlikeBehavior.cs" />
      <None Include="Assets\LeapMotion\Resources\LeapIRUndistorted.shader" />
