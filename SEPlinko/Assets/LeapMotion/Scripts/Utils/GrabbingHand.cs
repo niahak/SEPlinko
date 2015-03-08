@@ -129,66 +129,22 @@ public class GrabbingHand : MonoBehaviour {
     Leap.Utils.IgnoreCollisions(gameObject, active_object_.gameObject, true);
     GrabbableObject grabbable = active_object_.GetComponent<GrabbableObject>();
 
-    // Setup initial position and rotation conditions.
-    palm_rotation_ = hand_model.GetPalmRotation();
-    object_pinch_offset_ = Vector3.zero;
-
-    // If we don't center the object, find the closest point in the collider for our grab point.
-    if (grabbable == null || !grabbable.centerGrabbedObject) {
-      Vector3 delta_position = active_object_.transform.position - current_pinch_position_;
-
-      Ray pinch_ray = new Ray(current_pinch_position_, delta_position);
-      RaycastHit pinch_hit;
-
-      // If we raycast hits the object, we're outside the collider so grab the hit point.
-      // If not, we're inside the collider so just use the pinch position.
-      if (active_object_.Raycast(pinch_ray, out pinch_hit, grabObjectDistance))
-        object_pinch_offset_ = active_object_.transform.position - pinch_hit.point;
-      else
-        object_pinch_offset_ = active_object_.transform.position - current_pinch_position_;
-    }
-
-    filtered_pinch_position_ = active_object_.transform.position - object_pinch_offset_;
-    object_pinch_offset_ = Quaternion.Inverse(active_object_.transform.rotation) *
-                           object_pinch_offset_;
-    rotation_from_palm_ = Quaternion.Inverse(palm_rotation_) * active_object_.transform.rotation;
-
-    // If we can rotate the object quickly, increase max angular velocity for now.
-    if (grabbable == null || grabbable.rotateQuickly) {
-      last_max_angular_velocity_ = active_object_.GetComponent<Rigidbody>().maxAngularVelocity;
-      active_object_.GetComponent<Rigidbody>().maxAngularVelocity = Mathf.Infinity;
-    }
 
     if (grabbable != null) {
       // Notify grabbable object that it was grabbed.
       grabbable.OnGrab();
 
-      if (grabbable.useAxisAlignment) {
-        // If this option is enabled we only want to align the object axis with the palm axis
-        // so we'll cancel out any rotation about the aligned axis.
-        Vector3 palm_vector = grabbable.rightHandAxis;
-        if (hand_model.GetLeapHand().IsLeft)
-          palm_vector = Vector3.Scale(palm_vector, new Vector3(-1, 1, 1));
-
-        Vector3 axis_in_palm = rotation_from_palm_ * grabbable.objectAxis;
-        Quaternion axis_correction = Quaternion.FromToRotation(axis_in_palm, palm_vector);
-        if (Vector3.Dot(axis_in_palm, palm_vector) < 0)
-          axis_correction = Quaternion.FromToRotation(axis_in_palm, -palm_vector);
-          
-        rotation_from_palm_ = axis_correction * rotation_from_palm_;
-      }
     }
   }
 
   protected void OnRelease() {
     if (active_object_ != null) {
+            Debug.Log("releasing target");
       // Notify the grabbable object that is was released.
       GrabbableObject grabbable = active_object_.GetComponent<GrabbableObject>();
       if (grabbable != null)
         grabbable.OnRelease();
-
-      if (grabbable == null || grabbable.rotateQuickly)
-        active_object_.GetComponent<Rigidbody>().maxAngularVelocity = last_max_angular_velocity_;
+           
 
       Leap.Utils.IgnoreCollisions(gameObject, active_object_.gameObject, false);
     }
@@ -237,6 +193,10 @@ public class GrabbingHand : MonoBehaviour {
 
     Vector3 delta_pinch = current_pinch_position_ - filtered_pinch_position_;
     filtered_pinch_position_ += (1.0f - positionFiltering) * delta_pinch;
+
+        if (pinch_state_ == PinchState.kPinched) {
+            ContinueHardPinch();
+        }
   }
 
   protected void UpdatePalmRotation() {
@@ -248,59 +208,26 @@ public class GrabbingHand : MonoBehaviour {
   protected bool ObjectReleaseBreak(Vector3 pinch_position) {
     if (active_object_ == null)
       return true;
-
+        Debug.Log("break from target");
     Vector3 delta_position = pinch_position - active_object_.transform.position;
     return delta_position.magnitude > releaseBreakDistance;
   }
 
   // If we're in a pinch state, just move the object to the right spot using velocities.
   protected void ContinueHardPinch() {
-    Quaternion target_rotation = palm_rotation_ * rotation_from_palm_;
 
-    Vector3 target_position = filtered_pinch_position_ + target_rotation * object_pinch_offset_;
-    target_position.x = Mathf.Clamp(target_position.x, minMovement.x, maxMovement.x);
-    target_position.y = Mathf.Clamp(target_position.y, minMovement.y, maxMovement.y);
-    target_position.z = Mathf.Clamp(target_position.z, minMovement.z, maxMovement.z);
-    Vector3 velocity = (target_position - active_object_.transform.position) / Time.deltaTime;
-    active_object_.GetComponent<Rigidbody>().velocity = velocity;
 
-    Quaternion delta_rotation = target_rotation *
-                                Quaternion.Inverse(active_object_.transform.rotation);
-
-    float angle = 0.0f;
-    Vector3 axis = Vector3.zero;
-    delta_rotation.ToAngleAxis(out angle, out axis);
-
-    if (angle >= 180) {
-      angle = 360 - angle;
-      axis = -axis;
-    }
-    if (angle != 0)
-      active_object_.GetComponent<Rigidbody>().angularVelocity = angle * axis;
+        if (active_object_ != null) {
+            active_object_.GetComponent<Rigidbody> ().position = current_pinch_position_;
+        }
   }
 
   // If we are releasing the object only apply a weaker force to the object
   // like it's sliding through your fingers.
   protected void ContinueSoftPinch() {
-    Quaternion target_rotation = palm_rotation_ * rotation_from_palm_;
 
-    Vector3 target_position = filtered_pinch_position_ + target_rotation * object_pinch_offset_;
-    Vector3 delta_position = target_position - active_object_.transform.position;
+   
 
-    float strength = (releaseBreakDistance - delta_position.magnitude) / releaseBreakDistance;
-    strength = releaseStrengthCurve.Evaluate(strength);
-    active_object_.GetComponent<Rigidbody>().AddForce(delta_position.normalized * strength * positionFiltering,
-                                      ForceMode.Acceleration);
-
-    Quaternion delta_rotation = target_rotation *
-                                Quaternion.Inverse(active_object_.transform.rotation);
-
-    float angle = 0.0f;
-    Vector3 axis = Vector3.zero;
-    delta_rotation.ToAngleAxis(out angle, out axis);
-
-    active_object_.GetComponent<Rigidbody>().AddTorque(strength * rotationFiltering * angle * axis,
-                                       ForceMode.Acceleration);
   }
 
   void FixedUpdate() {
