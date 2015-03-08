@@ -21,7 +21,10 @@ public class PuckControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+	    if (gameObject.GetComponent<Rigidbody> ().position.y < 5) {
+            gameObject.GetComponent<Rigidbody> ().position = originalPosition;
+            gameObject.GetComponent<Rigidbody> ().velocity = new Vector3(0,0,0);
+        }
 	}
 
     void OnCollisionEnter(Collision col) {
