@@ -13,6 +13,7 @@ public class PuckControl : MonoBehaviour {
     private AudioSource source;
     private bool finishedGame = false;
     private GameObject winText;
+    private Material winTextMaterial;
 
     void Awake () {
         source = GetComponent<AudioSource>();
@@ -20,6 +21,7 @@ public class PuckControl : MonoBehaviour {
         originalRotation = transform.rotation;
         
         winText = GameObject.Find ("WinText");
+        winTextMaterial = (Material)Resources.Load ("WinText", typeof(Material));
     }
 
 	// Use this for initialization
@@ -36,6 +38,7 @@ public class PuckControl : MonoBehaviour {
 
     private void ResetPuck()
     {
+        Debug.Log ("Reset Puck");
         finishedGame = false;
         winText.GetComponent<MeshRenderer>().enabled = false;
 
@@ -58,12 +61,23 @@ public class PuckControl : MonoBehaviour {
             }
             source.PlayOneShot(pegSound, 1.0f);
 
-            if (col.gameObject.tag == "PuckBucket")
+            if (col.gameObject.tag.StartsWith("PuckBucket"))
             {
+                Debug.Log ("Puck Bucket");
                 bucketCollisions++;
                 if(bucketCollisions >3 && !finishedGame)
                 {
+                    Debug.Log ("End Game");
                     finishedGame = true;
+                    if (col.gameObject.tag == "PuckBucketOrange") {
+                        winTextMaterial.SetColor("_Color",new Color(.933f, .463f, .137f));
+                    }
+                    else if (col.gameObject.tag == "PuckBucketGreen") {
+                        winTextMaterial.color = new Color(.278f, .675f, .282f);
+                    }
+                    else if (col.gameObject.tag == "PuckBucketPurple") {
+                        winTextMaterial.SetColor("_Color",new Color(.29f, .145f, .408f));
+                    }
                     winText.GetComponent<MeshRenderer>().enabled = true;
                     winText.GetComponent<Animator>().Play("Win",-1,0f);
 
