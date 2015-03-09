@@ -38,7 +38,6 @@ public class PuckControl : MonoBehaviour {
 
     private void ResetPuck()
     {
-        Debug.Log ("Reset Puck");
         finishedGame = false;
         winText.GetComponent<MeshRenderer>().enabled = false;
 
@@ -63,11 +62,9 @@ public class PuckControl : MonoBehaviour {
 
             if (col.gameObject.tag.StartsWith("PuckBucket"))
             {
-                Debug.Log ("Puck Bucket");
                 bucketCollisions++;
                 if(bucketCollisions >3 && !finishedGame)
                 {
-                    Debug.Log ("End Game");
                     finishedGame = true;
                     if (col.gameObject.tag == "PuckBucketOrange") {
                         winTextMaterial.SetColor("_Color",new Color(.933f, .463f, .137f));
